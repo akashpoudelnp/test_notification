@@ -24,16 +24,20 @@ const messaging = getMessaging(app);
 
 
 function fetchToken() {
-    getToken(messaging, { vapidKey: 'BNS-rfCR8Sdz5bOrW4bV2gaLXYnEMphsfNKVbwxPbQMPsyAoCwcI99ZNk8lO4wV9C8coMKU6_jXqFCS7o5LEgq8' }).then((currentToken) => {
-        if (currentToken) {
-            console.log(currentToken)
-            myToken.value =currentToken;
-        } else {
-            console.log('No registration token available. Request permission to generate one.');
-        }
-    }).catch((err) => {
-        console.log('An error occurred while retrieving token. ', err);
-    });
+    Notification.requestPermission().then(e=>{
+        getToken(messaging, { vapidKey: 'BNS-rfCR8Sdz5bOrW4bV2gaLXYnEMphsfNKVbwxPbQMPsyAoCwcI99ZNk8lO4wV9C8coMKU6_jXqFCS7o5LEgq8' }).then((currentToken) => {
+            if (currentToken) {
+                console.log(currentToken)
+                myToken.value =currentToken;
+            } else {
+                console.log('No registration token available. Request permission to generate one.');
+            }
+        }).catch((err) => {
+            console.log('An error occurred while retrieving token. ', err);
+        });
+    }).catch(err=>{
+        alert('Failed to get notification permission')
+    })
 }
 </script>
 

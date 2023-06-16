@@ -1,6 +1,7 @@
 <script setup>
 import { initializeApp } from "firebase/app";
 import { getMessaging,getToken } from "firebase/messaging";
+import {ref} from "vue";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCPpE_inybQtcfi3e7sQioLVzVsEAqOBek",
@@ -15,6 +16,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+const myToken = ref('not_loaded');
 
 // Initialize Firebase Cloud Messaging and get a reference to the service
 const messaging = getMessaging(app);
@@ -22,6 +24,7 @@ const messaging = getMessaging(app);
 getToken(messaging, { vapidKey: 'BNS-rfCR8Sdz5bOrW4bV2gaLXYnEMphsfNKVbwxPbQMPsyAoCwcI99ZNk8lO4wV9C8coMKU6_jXqFCS7o5LEgq8' }).then((currentToken) => {
     if (currentToken) {
         console.log(currentToken)
+        myToken.value =currentToken;
     } else {
         console.log('No registration token available. Request permission to generate one.');
     }
@@ -33,5 +36,8 @@ getToken(messaging, { vapidKey: 'BNS-rfCR8Sdz5bOrW4bV2gaLXYnEMphsfNKVbwxPbQMPsyA
 <template>
   <main>
       <h1>Test Notification Sender</h1>
+      <pre>
+          {{myToken}}
+      </pre>
   </main>
 </template>

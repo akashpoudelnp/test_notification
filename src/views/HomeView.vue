@@ -21,23 +21,27 @@ const myToken = ref('not_loaded');
 // Initialize Firebase Cloud Messaging and get a reference to the service
 const messaging = getMessaging(app);
 
-getToken(messaging, { vapidKey: 'BNS-rfCR8Sdz5bOrW4bV2gaLXYnEMphsfNKVbwxPbQMPsyAoCwcI99ZNk8lO4wV9C8coMKU6_jXqFCS7o5LEgq8' }).then((currentToken) => {
-    if (currentToken) {
-        console.log(currentToken)
-        myToken.value =currentToken;
-    } else {
-        console.log('No registration token available. Request permission to generate one.');
-    }
-}).catch((err) => {
-    console.log('An error occurred while retrieving token. ', err);
-});
+
+
+function fetchToken() {
+    getToken(messaging, { vapidKey: 'BNS-rfCR8Sdz5bOrW4bV2gaLXYnEMphsfNKVbwxPbQMPsyAoCwcI99ZNk8lO4wV9C8coMKU6_jXqFCS7o5LEgq8' }).then((currentToken) => {
+        if (currentToken) {
+            console.log(currentToken)
+            myToken.value =currentToken;
+        } else {
+            console.log('No registration token available. Request permission to generate one.');
+        }
+    }).catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+    });
+}
 </script>
 
 <template>
   <main>
-      <h1>Test Notification Sender</h1>
-      <pre>
-          {{myToken}}
-      </pre>
+      <h1>Firebase Notification Tester</h1>
+
+      <p style="background: gray; padding: 2; border: 1px solid black;">{{myToken}}</p>
+      <button @click="fetchToken">Get Token</button>
   </main>
 </template>
